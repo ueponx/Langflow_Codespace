@@ -5,11 +5,13 @@ Langflow + Ollama（IBM Granite）を使ったアプリケーション構築用�
 ## クイックスタート
 
 ### 1. Codespacesで開く
+
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/ueponx/langflow-ollama-codespaces)
 
 ### 2. 自動セットアップ完了を待つ
 
-Codespacesが起動すると自動で以下が実行されます：
+Codespacesが起動すると自動で以下が実行されます。
+
 - Langflow + 依存関係インストール
 - Ollama インストール・起動
 - 基本LLMモデルダウンロード（granite3.3:2b, nomic-embed-text）

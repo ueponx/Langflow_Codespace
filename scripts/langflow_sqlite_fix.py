@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-SQLite互換性問題を解決してLangflowを起動するスクリプト
+Langflowを起動するスクリプト
 """
 import sys
 import os

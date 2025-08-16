@@ -15,7 +15,7 @@ echo "Pythonパッケージをインストール中..."
 pip install --upgrade pip
 pip install -r requirements.txt
 
-# SQLite問題の解決（Chroma用）
+# SQLite（Chroma用）
 echo "SQLite設定中..."
 # pysqlite3のシンボリックリンク作成
 python3 -c "
@@ -23,7 +23,7 @@ import sqlite3
 print('Current SQLite version:', sqlite3.sqlite_version)
 "
 
-# SQLite3の問題を回避するための設定
+# SQLite3の設定
 python3 -c "
 import sys
 import pysqlite3

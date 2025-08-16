@@ -69,11 +69,9 @@ if [ ! -d "$FLOWS_PATH" ]; then
     mkdir -p "$FLOWS_PATH"
 fi
 
-# SQLite修正スクリプトでLangflow起動
-echo "Langflow起動中（SQLite修正版）..."
+# Langflow起動
+echo "Langflow起動中（SQLite使用）..."
 echo "アクセスURL: http://localhost:7860"
-
-# SQLite修正用のPythonスクリプトを実行
 python3 scripts/langflow_sqlite_fix.py
 
 echo "起動完了！"
