@@ -24,14 +24,18 @@ fi
 echo -e "\n2. インストール済みモデル一覧"
 ollama list
 
-# モデル動作テスト
-echo -e "\n3. モデル動作テスト"
-
-echo "Graniteテスト（コード生成）:"
+# Graniteモデル動作テスト
+echo -e "\n3. Graniteモデル動作テスト"
+echo "コード生成テスト:"
 timeout 30s ollama run granite3.3:2b "Write a simple Python function to add two numbers" || echo "タイムアウト"
 
-echo -e "\n埋め込みモデルテスト:"
-timeout 20s ollama run nomic-embed-text "test embedding" || echo "タイムアウト"
+# 埋め込みモデル確認（生成テストはスキップ）
+echo -e "\n4. 埋め込みモデル確認"
+if ollama list | grep -q "nomic-embed-text"; then
+    echo "nomic-embed-text: インストール済み（RAG用埋め込みモデル）"
+else
+    echo "nomic-embed-text: 未インストール"
+fi
 
 echo -e "\nテスト完了"
 echo "準備完了です！"

@@ -71,7 +71,7 @@ fi
 # Langflow起動
 echo "Langflow起動中..."
 echo "アクセスURL: http://localhost:7860"
-langflow run --host 0.0.0.0 --port 7860 --load-flows-path "$FLOWS_PATH"
+langflow run --host 0.0.0.0 --port 7860
 
 echo "起動完了！"
 echo "アクセス情報:"
