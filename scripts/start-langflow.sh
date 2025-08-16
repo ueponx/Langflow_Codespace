@@ -9,6 +9,16 @@ cd "$REPO_DIR"
 
 echo "作業ディレクトリ: $(pwd)"
 
+# SQLite問題の解決
+echo "SQLite設定確認中..."
+python3 -c "
+import sys
+__import__('pysqlite3')
+sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+import sqlite3
+print('SQLite version:', sqlite3.sqlite_version)
+"
+
 # コマンド存在確認
 if ! command -v ollama &> /dev/null; then
     echo "Ollamaがインストールされていません。先にsetup.shを実行してください。"
@@ -68,10 +78,25 @@ if [ ! -d "$FLOWS_PATH" ]; then
     mkdir -p "$FLOWS_PATH"
 fi
 
-# Langflow起動
+# SQLite修正用のPythonスクリプトでLangflow起動
 echo "Langflow起動中..."
 echo "アクセスURL: http://localhost:7860"
-langflow run --host 0.0.0.0 --port 7860
+
+python3 -c "
+import sys
+__import__('pysqlite3')
+sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+
+import subprocess
+import os
+
+# 環境変数設定
+os.environ['OLLAMA_HOST'] = 'http://localhost:11434'
+
+# Langflow起動
+cmd = ['langflow', 'run', '--host', '0.0.0.0', '--port', '7860']
+subprocess.run(cmd)
+"
 
 echo "起動完了！"
 echo "アクセス情報:"

@@ -15,6 +15,22 @@ echo "Pythonパッケージをインストール中..."
 pip install --upgrade pip
 pip install -r requirements.txt
 
+# SQLite問題の解決（Chroma用）
+echo "SQLite設定中..."
+# pysqlite3のシンボリックリンク作成
+python3 -c "
+import sqlite3
+print('Current SQLite version:', sqlite3.sqlite_version)
+"
+
+# SQLite3の問題を回避するための設定
+python3 -c "
+import sys
+import pysqlite3
+sys.modules['sqlite3'] = pysqlite3
+print('SQLite3 module replaced with pysqlite3')
+"
+
 # Ollamaインストール
 echo "Ollamaをインストール中..."
 curl -fsSL https://ollama.ai/install.sh | sh
@@ -62,6 +78,9 @@ if [ -f scripts/test-ollama.sh ]; then
     bash scripts/test-ollama.sh
 else
     echo "test-ollama.sh が見つかりません。手動で動作確認してください。"
+    # 簡易確認
+    echo "簡易動作確認:"
+    ollama list
 fi
 
 echo "セットアップ完了！"
