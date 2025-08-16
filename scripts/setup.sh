@@ -3,8 +3,12 @@ set -e
 
 echo "Langflow + Ollama + Granite 環境をセットアップ中..."
 
-# 作業ディレクトリ確認
-cd /workspaces/langflow-ollama-granite
+# 作業ディレクトリ確認（カレントディレクトリを使用）
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_DIR="$(dirname "$SCRIPT_DIR")"
+cd "$REPO_DIR"
+
+echo "作業ディレクトリ: $(pwd)"
 
 # Pythonパッケージインストール
 echo "Pythonパッケージをインストール中..."
@@ -15,14 +19,33 @@ pip install -r requirements.txt
 echo "Ollamaをインストール中..."
 curl -fsSL https://ollama.ai/install.sh | sh
 
+# PATHにOllamaを追加
+echo 'export PATH="/usr/local/bin:$PATH"' >> ~/.bashrc
+export PATH="/usr/local/bin:$PATH"
+
+# Ollamaサービス確認
+echo "Ollamaインストール確認..."
+which ollama || echo "Ollama not found in PATH"
+
 # Ollama起動（バックグラウンド）
 echo "Ollamaサーバーを起動中..."
-ollama serve &
-sleep 15  # サーバー起動待機
+nohup ollama serve > ollama.log 2>&1 &
+sleep 20  # サーバー起動待機
 
 # 環境変数設定
 echo "環境変数を設定中..."
 export OLLAMA_HOST=http://localhost:11434
+
+# Ollamaが起動しているか確認
+echo "Ollama API確認中..."
+for i in {1..10}; do
+    if curl -s http://localhost:11434/api/version > /dev/null; then
+        echo "Ollama API起動確認"
+        break
+    fi
+    echo "待機中... ($i/10)"
+    sleep 3
+done
 
 # 基本モデルダウンロード
 echo "基本モデルをダウンロード中..."
@@ -31,11 +54,15 @@ ollama pull nomic-embed-text
 
 # フォルダ構成確認
 echo "フォルダ構造を確認中..."
-ls -la flows/ data/ scripts/
+ls -la flows/ data/ scripts/ 2>/dev/null || echo "一部のフォルダが見つかりません"
 
 # 動作確認
 echo "基本動作を確認中..."
-bash scripts/test-ollama.sh
+if [ -f scripts/test-ollama.sh ]; then
+    bash scripts/test-ollama.sh
+else
+    echo "test-ollama.sh が見つかりません。手動で動作確認してください。"
+fi
 
 echo "セットアップ完了！"
 echo "次の手順:"

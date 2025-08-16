@@ -2,6 +2,15 @@
 
 echo "Ollama動作テスト開始..."
 
+# PATHにOllamaを追加（念のため）
+export PATH="/usr/local/bin:$PATH"
+
+# Ollamaコマンド存在確認
+if ! command -v ollama &> /dev/null; then
+    echo "Ollamaがインストールされていません"
+    exit 1
+fi
+
 # Ollamaサーバー確認
 echo "1. Ollamaサーバー状態確認"
 if curl -s http://localhost:11434/api/version; then
