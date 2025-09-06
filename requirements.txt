@@ -1,3 +1,4 @@
 langflow==1.5.1
 langchain-community==0.3.*
 langchain-text-splitters==0.3.*
+pysqlite3-binary>=0.5.0
