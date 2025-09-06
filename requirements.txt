@@ -1,3 +1,10 @@
-langflow>=1.0.0
-requests>=2.31.0
-pysqlite3-binary>=0.5.0
+# langflow>=1.0.0
+# requests>=2.31.0
+# pysqlite3-binary>=0.5.0
+
+langflow[faiss,pdf]
+langchain-community
+langchain-text-splitters
+requests
+pysqlite3-binary
+
